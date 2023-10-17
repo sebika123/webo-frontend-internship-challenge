@@ -1,0 +1,29 @@
+
+
+nav .dropdown {
+    position: relative;
+}
+
+
+header {
+    background-image: url('images/images.jpg');
+    background-size: cover;
+}
+
+.homeimage{
+    width: 100% ;
+  }
+  
+  nav ul li {
+      display: inline;
+      margin: 0 10px;
+  } 
+  nav {
+    position: absolute;
+    top: 0;
+    left: 30;
+    width: 100%;
+}
+nav a {
+    color: white;
+}
