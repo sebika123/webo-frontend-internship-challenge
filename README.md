@@ -1,1 +1,0 @@
-# webo-frontend-internship-challenge
