@@ -1,3 +1,27 @@
 .jumbotron{
     background-color:azure
 }
+.original_title{
+    background-color: azure;
+    font-size:20px;
+    font-weight:bold;
+    padding:2px;
+    display:flex;
+    justify-content:center;
+}
+
+
+.summary_title{
+    background-color:grey;
+    font-size:20px;
+    font-weight:bold;
+    padding:2px;
+    display:flex;
+    justify-content:center;
+
+}
+
+.dis{
+    display:flex;
+    flex-direction:row;
+}

@@ -17,15 +17,16 @@
       </div>
 </div>
     
-<div class="container">
-    <form action="/analyze" method="POST">
-        <textarea name="rawtext" class="form-control",rows=3 placeholder="Enter your raw text">
-        </textarea>
-        <button  class="btn btn-primary" type="submit" value="submit">
-            Submit
-        </button>
-        
-        </form>
+
+<div class="container" style="display: flex; justify-content:space-around">
+   <p class="original_title col-sm-4"> Original Text</p>
+   <p class="summary_title col-sm-4">Summary</p>
+</div>
+
+
+<div class="container dis">
+    <p class="originaltxt col-sm-6">{{original_txt}}</p>
+    <p class="summarytxt col-sm-6">{{summary}}</p>
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
