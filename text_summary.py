@@ -3,6 +3,23 @@ from spacy.lang.en.stop_words import STOP_WORDS
 from string import punctuation
 from heapq import nlargest
 
+
+
+import requests
+from bs4 import BeautifulSoup
+
+def get_text_from_link(link):
+    try:
+        response = requests.get(link)
+        soup = BeautifulSoup(response.text, 'html.parser')
+        paragraphs = soup.find_all('p')  # Assuming the main text is in <p> tags, adjust as needed
+        text = ' '.join([p.get_text() for p in paragraphs])
+        return text
+    except Exception as e:
+        print(f"Error fetching content from the link: {e}")
+        return None
+
+
 text= """Samsung was founded by Lee Byung-chul in 1938 as a trading company. 
 Over the next three decades, the group diversified into areas including food
  processing, textiles, insurance, securities, and retail. Samsung entered the electronics industry in the late 1960s and the 
@@ -10,7 +27,7 @@ Over the next three decades, the group diversified into areas including food
  five business groups – Samsung Group, Shinsegae Group, CJ Group and Hansol Group, and JoongAng Group. """
 
 
-def summarizer(rawdocs):
+def summarizer(rawdocs,percentage=30):
     stopwords=list(STOP_WORDS)
     #print(stopwords)
     nlp=spacy.load('en_core_web_sm')
@@ -39,6 +56,7 @@ def summarizer(rawdocs):
     #print(sent_tokens)
 
     sent_scores={} #dict
+    
     for sent in sent_tokens:
         for word in sent:
             if word.text in word_freq.keys():                #saves the frequencies of words in a sentence
@@ -47,8 +65,8 @@ def summarizer(rawdocs):
                 else:
                     sent_scores[sent]+=word_freq[word.text]
     #print(sent_scores)
-
-    select_len=int(len(sent_tokens)*0.3) #for 30%summary
+    select_len = int(len(sent_tokens) * (percentage / 100))
+   # select_len=int(len(sent_tokens)*0.3) #for 30%summary
     print(select_len)
     summary=nlargest(select_len, sent_scores,key=sent_scores.get) #sent score dict correspoding freq in which max freq word will et summarized
     #print(summary)

@@ -11,19 +11,35 @@
 <div class="container">
     <div class="jumbotron jumbotron-fluid">
         <div class="container">
-          <h1 class="display-4">Text Summarization</h1>
-          <p class="lead">provides best summarizatyion</p>
+          <h1 class="display-4 heading ">Text Summarization</h1>
+          <p class="lead">provides best summarization</p>
         </div>
       </div>
 </div>
     
 <div class="container">
     <form action="/analyze" method="POST">
-        <textarea name="rawtext" class="form-control",rows=3 placeholder="Enter your raw text">
-        </textarea>
-        <button  class="btn btn-primary" type="submit" value="submit">
-            Submit
-        </button>
+        
+            <!-- <textarea name="rawtext" class="form-control" rows="3" placeholder="Enter your raw text"></textarea>
+            <label for="percentage">Summary Percentage:</label>
+            <input type="number" name="percentage" class="form-control" placeholder="Enter percentage" min="1" max="100" > -->
+
+            <div class="search-container">
+                <textarea name="rawtext" class="form-control" rows="3" placeholder="Enter your raw text"></textarea>
+               
+                <label for="percentage">Summary Percentage:</label>
+                <input type="number" name="percentage" class="form-control" placeholder="Enter percentage" min="1" max="100">
+                
+            </div>
+            <label for="link">Link (optional):</label>
+            <input type="text" id="link" name="link"><br>
+
+            <button class="btn btn-primary submitBtn" type="submit" value="submit">
+                Submit
+            </button>
+        </form>
+
+
         
         </form>
 </div>

@@ -25,3 +25,46 @@
     display:flex;
     flex-direction:row;
 }
+.originaltxt{
+background-color:azure;
+padding:20px;
+}
+
+
+.summarytxt{
+    background-color:grey;
+    padding:20px;
+    margin-left:20px;
+}
+.heading{
+    font-weight:bold;
+    display:flex;
+    justify-content:center;
+}
+
+.lead{
+    display:flex;
+    justify-content: center;
+}
+
+.submitBtn{
+    margin-top:10px;
+}
+
+
+.search-container {
+    display: flex;
+    flex-direction: column;
+    max-width: 400px; /* Set a maximum width if needed */
+}
+
+
+
+.search-button {
+    background-color: #4CAF50; /* Green background color */
+    color: white;
+    padding: 10px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
