@@ -1,81 +1,50 @@
+
 import spacy
 from spacy.lang.en.stop_words import STOP_WORDS
-from string import punctuation
-from heapq import nlargest
-
-
+import networkx as nx
+from sklearn.feature_extraction.text import TfidfVectorizer
+import requests
 
 import requests
 from bs4 import BeautifulSoup
 
 def get_text_from_link(link):
     try:
+       
         response = requests.get(link)
+        response.raise_for_status() 
+
+        # Parse the HTML content using BeautifulSoup
         soup = BeautifulSoup(response.text, 'html.parser')
-        paragraphs = soup.find_all('p')  # Assuming the main text is in <p> tags, adjust as needed
-        text = ' '.join([p.get_text() for p in paragraphs])
-        return text
-    except Exception as e:
-        print(f"Error fetching content from the link: {e}")
-        return None
+
+        # Extract text content from the parsed HTML
+        text_content = soup.get_text(separator=' ', strip=True)
+        
+        return text_content
+    except requests.RequestException as e:
+        # Handle request errors (e.g., link not accessible)
+        return f"Error fetching content from link: {e}"
 
 
-text= """Samsung was founded by Lee Byung-chul in 1938 as a trading company. 
-Over the next three decades, the group diversified into areas including food
- processing, textiles, insurance, securities, and retail. Samsung entered the electronics industry in the late 1960s and the 
- construction and shipbuilding industries in the mid-1970s; these areas would drive its subsequent growth. Following Lee's death in 1987, Samsung was separated into 
- five business groups – Samsung Group, Shinsegae Group, CJ Group and Hansol Group, and JoongAng Group. """
+def textrank_summarizer(rawdocs, percentage=30):
+    nlp = spacy.load('en_core_web_sm')
+    stop_words = set(STOP_WORDS)
+    doc = nlp(rawdocs)
+    sentences = [sent.text.lower() for sent in doc.sents if sent.text.lower() not in stop_words]
 
+    vectorizer = TfidfVectorizer()
+    X = vectorizer.fit_transform(sentences)
+    similarity_matrix = (X * X.T).toarray()
 
-def summarizer(rawdocs,percentage=30):
-    stopwords=list(STOP_WORDS)
-    #print(stopwords)
-    nlp=spacy.load('en_core_web_sm')
-    doc=nlp(rawdocs)
-    #print(doc)
-    tokens=[token.text for token in doc]
-    #print (tokens)
-    word_freq={}
-    for word in doc:
-        if word.text.lower() not in stopwords and word.text.lower() not in punctuation:
-            if word.text  not in word_freq.keys():
-                word_freq[word.text]=1
-            else:
-                word_freq[word.text]+=1
-    #print(word_freq)
+    G = nx.from_numpy_array(similarity_matrix)
+    scores = nx.pagerank(G)
 
-    max_freq=max(word_freq.values())
+    ranked_sentences = sorted(((scores[i], sent) for i, sent in enumerate(sentences)), reverse=True)
+    select_len = int(len(ranked_sentences) * (percentage / 100))
+    selected_sentences = [sent for _, sent in ranked_sentences[:select_len]]
 
-    #print(max_freq) for max word freq
+    summary = ' '.join(selected_sentences)
 
-    for word in word_freq.keys():
-        word_freq[word]=word_freq[word]/max_freq    #each word's unit freq
-    print (word_freq)
+    return summary, doc, len(rawdocs.split(' ')), len(summary.split(' '))
 
-    sent_tokens= [sent for sent in doc.sents]  # sentence token list 
-    #print(sent_tokens)
-
-    sent_scores={} #dict
-    
-    for sent in sent_tokens:
-        for word in sent:
-            if word.text in word_freq.keys():                #saves the frequencies of words in a sentence
-                if sent not in sent_scores.keys():
-                    sent_scores[sent]=word_freq[word.text]
-                else:
-                    sent_scores[sent]+=word_freq[word.text]
-    #print(sent_scores)
-    select_len = int(len(sent_tokens) * (percentage / 100))
-   # select_len=int(len(sent_tokens)*0.3) #for 30%summary
-    print(select_len)
-    summary=nlargest(select_len, sent_scores,key=sent_scores.get) #sent score dict correspoding freq in which max freq word will et summarized
-    #print(summary)
-
-
-    final_summary=[word.text for word in summary] #summary word pick and join each picked word
-    summary=''.join(final_summary)
-    # print(summary)
-    # print("length of original text",len(text.split(''))) #total lenghth print
-    # print("length of summary text",len(summary.split(''))) 
-
-    return summary,doc,len(rawdocs.split(' ')),len(summary.split(' '))
+# Rest of the code remains the same...

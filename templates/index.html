@@ -25,14 +25,15 @@
             <input type="number" name="percentage" class="form-control" placeholder="Enter percentage" min="1" max="100" > -->
 
             <div class="search-container">
-                <textarea name="rawtext" class="form-control" rows="3" placeholder="Enter your raw text"></textarea>
+                <label for="rawtext">Enter Text or Link:</label>
+                <textarea name="rawtext" class="form-control" rows="3" id="rawtext"  placeholder="Enter your raw text"></textarea>
                
+
                 <label for="percentage">Summary Percentage:</label>
                 <input type="number" name="percentage" class="form-control" placeholder="Enter percentage" min="1" max="100">
                 
             </div>
-            <label for="link">Link (optional):</label>
-            <input type="text" id="link" name="link"><br>
+            
 
             <button class="btn btn-primary submitBtn" type="submit" value="submit">
                 Submit
@@ -40,8 +41,10 @@
         </form>
 
 
-        
-        </form>
+
+</div>
+<div class="footer">
+    <p>&copy; 2023 Text Summarizer. All rights reserved.</p>
 </div>
 
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
