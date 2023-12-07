@@ -15,8 +15,8 @@ def index():
 def analyse():
     rawtext = request.form['rawtext']
     
-    # to check link if present
-    link = request.form.get('link', None)
+  
+    link = request.form.get('link', None)    # to check link if present
     
     if '://' in rawtext:
         rawtext = get_text_from_link(rawtext)
