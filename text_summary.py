@@ -14,7 +14,7 @@ def get_text_from_link(link):
         response = requests.get(link)
         response.raise_for_status() 
 
-        # Parse the HTML content using BeautifulSoup
+        
         soup = BeautifulSoup(response.text, 'html.parser')
 
         # Extract text content from the parsed HTML
@@ -47,4 +47,4 @@ def textrank_summarizer(rawdocs, percentage=30):
 
     return summary, doc, len(rawdocs.split(' ')), len(summary.split(' '))
 
-# Rest of the code remains the same...
+
